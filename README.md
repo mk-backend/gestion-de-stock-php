@@ -26,6 +26,7 @@ Version Symfony : [mk-backend/Symfony](https://github.com/mk-backend/Symfony)
 - Utiliser des **requêtes préparées** PDO pour se protéger des injections SQL.
 - Regrouper les lectures en base derrière une classe unique (`DataFacade`, patron de conception Façade).
 - Gérer les sessions et l'authentification sans framework.
+- Conteneuriser l'application avec **Docker** : un conteneur par service et la configuration dans un fichier `.env`.
 
 ## Pourquoi une version Symfony ensuite
 
@@ -43,6 +44,28 @@ Avec Docker :
 
 Au premier lancement, MySQL crée les tables à partir des scripts du dossier `database`.
 
+| Service | Rôle | Adresse |
+|---|---|---|
+| `web` | PHP 8.3 et Apache, le code est monté depuis le dossier du projet | `http://localhost:8081` |
+| `db` | MySQL 8, les données sont gardées dans un volume Docker | `localhost:3307` |
+| `phpmyadmin` | Interface pour consulter la base | `http://localhost:8082` |
+
+Commandes utiles :
+
+| Commande | Effet |
+|---|---|
+| `docker compose up -d` | Démarre l'application |
+| `docker compose down` | Arrête l'application (les données sont conservées) |
+| `docker compose logs -f web` | Affiche les erreurs PHP et Apache |
+| `docker compose down -v` | Arrête et efface la base, qui sera recréée au prochain lancement |
+
+À savoir :
+
+- Le fichier `.env` contient les mots de passe : il n'est pas versionné, seul `.env.example` l'est.
+- Pour charger des données de test, ajouter un fichier `database/2-donnees.sql` avant le premier lancement. Il n'est pas versionné.
+- Les connexions au site sont enregistrées dans `logs/connexion.log`.
+- L'email de « mot de passe oublié » n'est pas envoyé en local, car aucun serveur d'envoi n'est configuré.
+
 Sans Docker (UwAmp, XAMPP ou WAMP) :
 
 1. Copier le dossier dans le répertoire web du serveur (par exemple `www/gestion_de_stock`).
@@ -58,3 +81,5 @@ Sans Docker (UwAmp, XAMPP ou WAMP) :
 | `vue` | Les pages de l'application (connexion, tableau de bord, articles, ventes, reçus...) |
 | `public` | Feuille de style, images et icônes |
 | `database` | Script de création des tables, chargé par MySQL au premier lancement |
+| `logs` | Journal des connexions |
+| `Dockerfile`, `docker-compose.yml` | Image PHP et description des conteneurs |
