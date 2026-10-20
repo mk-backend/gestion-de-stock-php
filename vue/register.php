@@ -2,10 +2,6 @@
 require_once('../model/connexion.php');
 
 try {
-    // Connexion à la base de données
-    $connexion = new PDO("mysql:host=$nom_serveur;dbname=$nom_base_de_donnees", $utilisateur, $mot_de_passe);
-    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nom_utilisateur = trim($_POST['nom_utilisateur']);
         $mot_de_passe = trim($_POST['mot_de_passe']);

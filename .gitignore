@@ -1,2 +1,5 @@
-/logs/
+/logs/*
+!/logs/.gitkeep
 *.log
+.env
+/database/2-donnees.sql

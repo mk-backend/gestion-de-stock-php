@@ -18,7 +18,7 @@ Version Symfony : [mk-backend/Symfony](https://github.com/mk-backend/Symfony)
 - PHP (sans framework) et PDO
 - MySQL
 - HTML et CSS
-- UwAmp comme serveur local
+- Docker (PHP 8.3 avec Apache, MySQL 8, phpMyAdmin)
 
 ## Ce que j'ai appris
 
@@ -34,12 +34,21 @@ Le projet AlphaRetail reprend la même application avec Symfony (routes, Doctrin
 
 ## Lancer le projet en local
 
-1. Copier le dossier dans le répertoire web de UwAmp, XAMPP ou WAMP (par exemple `www/gestion_de_stock`).
-2. Créer une base MySQL nommée `gestion_de_stock`.
+Avec Docker :
+
+1. Copier `.env.example` en `.env` et choisir les mots de passe.
+2. Lancer `docker compose up -d --build`.
+3. Ouvrir `http://localhost:8081` pour l'application et `http://localhost:8082` pour phpMyAdmin.
+4. Créer un compte depuis la page d'inscription.
+
+Au premier lancement, MySQL crée les tables à partir des scripts du dossier `database`.
+
+Sans Docker (UwAmp, XAMPP ou WAMP) :
+
+1. Copier le dossier dans le répertoire web du serveur (par exemple `www/gestion_de_stock`).
+2. Créer une base MySQL nommée `gestion_de_stock` et y importer `database/1-structure.sql`.
 3. Si besoin, définir les variables d'environnement `DB_HOST`, `DB_NAME`, `DB_USER` et `DB_PASSWORD` (par défaut : `localhost`, `gestion_de_stock`, `root`, `root`).
 4. Ouvrir `http://localhost/gestion_de_stock/vue/login.php`.
-
-Le script de création des tables n'est pas inclus dans ce dépôt.
 
 ## Organisation du code
 
@@ -48,3 +57,4 @@ Le script de création des tables n'est pas inclus dans ce dépôt.
 | `model` | Connexion à la base, fonctions de lecture et traitements des formulaires (ajout, modification, suppression) |
 | `vue` | Les pages de l'application (connexion, tableau de bord, articles, ventes, reçus...) |
 | `public` | Feuille de style, images et icônes |
+| `database` | Script de création des tables, chargé par MySQL au premier lancement |
